@@ -1,0 +1,72 @@
+class Stock:
+    def __init__(self, symbol, name, price, quantity):
+        self.symbol = symbol
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+class Portfolio:
+    def __init__(self):
+        self.stocks = []
+
+    def add_stock(self, stock):
+        self.stocks.append(stock)
+
+    def remove_stock(self, symbol):
+        for stock in self.stocks:
+            if stock.symbol == symbol:
+                self.stocks.remove(stock)
+                print(f"{symbol} has been removed from the portfolio.")
+                return
+        print(f"{symbol} is not in the portfolio.")
+
+    def view_portfolio(self):
+        if not self.stocks:
+            print("Portfolio is empty.")
+            return
+
+        print("Portfolio:")
+        print("{:<10} {:<20} {:<10} {:<10}".format("Symbol", "Name", "Price", "Quantity"))
+        for stock in self.stocks:
+            print("{:<10} {:<20} ₹{:<10.2f} {:<10}".format(stock.symbol, stock.name, stock.price, stock.quantity))
+
+    def calculate_portfolio_value(self):
+        total_value = 0
+        for stock in self.stocks:
+            total_value += stock.price * stock.quantity
+        return total_value
+
+    def update_stock_price(self, symbol, new_price):
+        for stock in self.stocks:
+            if stock.symbol == symbol:
+                stock.price = new_price
+                print(f"Price of {symbol} updated to ₹{new_price}")
+                return
+        print(f"{symbol} is not in the portfolio.")
+
+def main():
+    portfolio = Portfolio()
+
+    stock1 = Stock("MRF", "Mrf Inc.", 2800.25, 10)
+    stock2 = Stock("CEAT", "Ceat Inc.", 1200.50, 6)
+    stock3 = Stock("APOLLO", "Apollo Inc", 980.75, 8)
+
+    portfolio.add_stock(stock1)
+    portfolio.add_stock(stock2)
+    portfolio.add_stock(stock3)
+
+    portfolio.view_portfolio()
+
+    print("Total portfolio value:", portfolio.calculate_portfolio_value())
+
+    print("\nUpdating stock price...")
+    portfolio.update_stock_price("MRF", 2800.50)
+
+    portfolio.view_portfolio()
+
+    portfolio.remove_stock("MRF")
+
+    portfolio.view_portfolio()
+
+if __name__ == "__main__":
+    main()
